@@ -12,6 +12,7 @@ public class TitleSceenManager : MonoBehaviour
 
     public void OnStartButton()
     {
-        //SceneManager.LoadScene();
+        GameManager.Instance.SceneNum = 1;
+        SceneManager.LoadScene("1.SelectScene");
     }
 }
