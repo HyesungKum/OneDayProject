@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-struct Stateinfo
+public struct Stateinfo
 {
     public state state;
     public float timer;
