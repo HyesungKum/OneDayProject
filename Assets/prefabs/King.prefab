@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 8913311003046216226}
   - component: {fileID: 8913311003046216229}
   - component: {fileID: 8913311003046216228}
-  - component: {fileID: 8913311003046216233}
   - component: {fileID: 8913311003046216231}
   - component: {fileID: 8913311003046216230}
+  - component: {fileID: 2583864243499030130}
   m_Layer: 0
   m_Name: King
-  m_TagString: Untagged
+  m_TagString: 1Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8913311003046216232}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.3354926, y: -1.2164018, z: 0}
+  m_LocalPosition: {x: -9.311924, y: -10.345032, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -74,12 +74,12 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1581842707
-  m_SortingLayer: 2
+  m_SortingLayerID: -824699605
+  m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 6934013284892070054, guid: a69f9e788982b8746a34ef183bb4aacf, type: 3}
+  m_Sprite: {fileID: 6373048116405451881, guid: 0e3502a80399d164ea01f1868f65acbf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1.6, y: 1.11}
@@ -108,25 +108,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &8913311003046216233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8913311003046216232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee16de2fca7abb24a8a1fd43877dc2a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selectPlayer: 1
-  maxHp: 100
-  curHp: 100
-  basicAttackDamage: 10
-  basicAttackSpeed: 1
-  speed: 500
-  basicAttack: {fileID: 6142545988332924572, guid: d149584502956f64fb942d40fb85cdc2, type: 3}
 --- !u!50 &8913311003046216231
 Rigidbody2D:
   serializedVersion: 4
@@ -161,6 +142,44 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.2}
-  m_Size: {x: 0.4, y: 0.7}
+  m_Offset: {x: 0, y: -0.25}
+  m_Size: {x: 0.2, y: 0.5}
   m_Direction: 0
+--- !u!114 &2583864243499030130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8913311003046216232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7177085904ee8b4cb1bd2ce6f5c3543, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rigidbody: {fileID: 0}
+  animator: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  selectPlayer: 1
+  maxHp: 100
+  curHp: 100
+  basicAttackDamage: 10
+  basicAttackSpeed: 1
+  speed: 700
+  uniqueSkillCooltime: 10
+  specialSkillCooltime: 10
+  playerStun: 0
+  playerSlow: 0
+  playerInvincibility: 0
+  basicAttack: {fileID: 6142545988332924572, guid: d149584502956f64fb942d40fb85cdc2, type: 3}
+  uniqueSkill: {fileID: 0}
+  specialSkill: {fileID: 2657273995666745890, guid: 480dd98f4d6843c44b03a5d3ef835ccc, type: 3}
+  xinput: 0
+  zinput: 0
+  xspeed: 0
+  left: 0
+  isAttack: 0
+  isUnique: 0
+  isSpecial: 0
+  isDeath: 0
+  basicSpeed: 0
