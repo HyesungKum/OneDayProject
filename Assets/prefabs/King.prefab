@@ -166,14 +166,14 @@ MonoBehaviour:
   basicAttackDamage: 10
   basicAttackSpeed: 1
   speed: 700
-  uniqueSkillCooltime: 10
-  specialSkillCooltime: 10
+  uniqueSkillCooltime: 1
+  specialSkillCooltime: 1
   playerStun: 0
   playerSlow: 0
   playerInvincibility: 0
   basicAttack: {fileID: 6142545988332924572, guid: d149584502956f64fb942d40fb85cdc2, type: 3}
-  uniqueSkill: {fileID: 0}
-  specialSkill: {fileID: 2657273995666745890, guid: 480dd98f4d6843c44b03a5d3ef835ccc, type: 3}
+  uniqueSkill: {fileID: 1316836195111038180, guid: bfbaeff007cf79340bae1803e8f62784, type: 3}
+  specialSkill: {fileID: 7404935314647237046, guid: 480dd98f4d6843c44b03a5d3ef835ccc, type: 3}
   xinput: 0
   zinput: 0
   xspeed: 0

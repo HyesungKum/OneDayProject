@@ -41,6 +41,7 @@ public class Player : MonoBehaviour
     public bool isSpecial;
     public bool isDeath;
     public float basicSpeed;
+    public bool isDonMove;
 
     void Start()
     {
@@ -56,6 +57,7 @@ public class Player : MonoBehaviour
     {
         if (isDeath == true) return;
         if (playerStun == state.Stun) return;
+        if (isDonMove == true) return;
         if (selectPlayer == 1)//1p
         {
             if (Input.GetKey(KeyCode.LeftArrow)) xinput = -1;
@@ -100,7 +102,7 @@ public class Player : MonoBehaviour
         xspeed = speed * xinput * Time.deltaTime;
         if (zinput > 0 && animator.GetBool("isGround") == true)
         {
-            rigidbody.AddForce(new Vector2(xspeed, speed / 10), ForceMode2D.Impulse);
+            rigidbody.AddForce(new Vector2(xspeed, speed / 7), ForceMode2D.Impulse);
             animator.SetBool("isGround", false);
         }
         rigidbody.velocity = new Vector2(xspeed, rigidbody.velocity.y);
@@ -144,7 +146,6 @@ public class Player : MonoBehaviour
             animator.SetTrigger("isDeath");
             isDeath = true;
         }
-
     }
     public void StateChage(Stateinfo chage)
     {
@@ -202,38 +203,62 @@ public class Player : MonoBehaviour
     }
     public virtual IEnumerator UniqueSkill_timer(float time)
     {
-        isUnique = true;
-        yield return new WaitForSeconds(time);
-        isUnique = false;
-        yield break;
-    }
-    public  void SpecialSkill()
-    {
-        StartCoroutine(SpecialSkill_timer(specialSkillCooltime));
-    }
-    public IEnumerator SpecialSkill_timer(float time)
-    {
         GameObject hitbox;
-        isSpecial = true;
-        animator.SetTrigger("isSpell2");
-        yield return new WaitForSeconds(0.4f);
+        isUnique = true;
+        isDonMove = true;
+        animator.SetTrigger("isSpell1");
+        yield return new WaitForSeconds(0.2f);
         if (left == true)
         {
-            hitbox = Instantiate(specialSkill, (Vector2)this.transform.position + new Vector2(-0.6f, 0), Quaternion.identity);
-            hitbox.GetComponent<ParticleSystemRenderer>().flip = new Vector2(1, 0);
-            hitbox.GetComponent<Rigidbody2D>().velocity = new Vector2(-10, 0);
+            hitbox = Instantiate(uniqueSkill, (Vector2)this.transform.position + new Vector2(-1f, 0), Quaternion.identity);
+            hitbox.GetComponentInChildren<ParticleSystemRenderer>().flip = new Vector2(1, 0);
             hitbox.SendMessage("Name", selectPlayer, SendMessageOptions.DontRequireReceiver);
+            rigidbody.velocity = new Vector2(-20,0);
             Destroy(hitbox, 1f);
         }
         else
         {
-            hitbox = Instantiate(specialSkill, (Vector2)this.transform.position + new Vector2(0.6f, 0), Quaternion.identity);
-            hitbox.GetComponent<ParticleSystemRenderer>().flip = new Vector2(0, 0);
-            hitbox.GetComponent<Rigidbody2D>().velocity = new Vector2(10, 0);
+            hitbox = Instantiate(uniqueSkill, (Vector2)this.transform.position + new Vector2(1f, 0), Quaternion.identity);
+            hitbox.GetComponentInChildren<ParticleSystemRenderer>().flip = new Vector2(0, 0);
             hitbox.SendMessage("Name", selectPlayer, SendMessageOptions.DontRequireReceiver);
+            rigidbody.velocity = new Vector2(20,0);
+
             Destroy(hitbox, 1f);
         }
-        yield return new WaitForSeconds(time-0.4f);
+        yield return new WaitForSeconds(0.2f);
+        isDonMove = false;
+
+        yield return new WaitForSeconds(time - 0.2f);
+        isUnique = false;
+        yield break;
+    }
+    public virtual void SpecialSkill()
+    {
+        StartCoroutine(SpecialSkill_timer(specialSkillCooltime));
+    }
+    public virtual IEnumerator SpecialSkill_timer(float time)
+    {
+        GameObject hitbox;
+        isSpecial = true;
+        animator.SetTrigger("isSpell2");
+        yield return new WaitForSeconds(0.2f);
+        if (left == true)
+        {
+            hitbox = Instantiate(specialSkill, (Vector2)this.transform.position + new Vector2(-1f, 0), Quaternion.identity);
+            hitbox.GetComponentInChildren<ParticleSystemRenderer>().flip = new Vector2(1, 0);
+            hitbox.SendMessage("Name", selectPlayer, SendMessageOptions.DontRequireReceiver);
+            hitbox.GetComponent<Rigidbody2D>().velocity = new Vector2(-10, 0);
+            Destroy(hitbox, 1f);
+        }
+        else
+        {
+            hitbox = Instantiate(specialSkill, (Vector2)this.transform.position + new Vector2(1f, 0), Quaternion.identity);
+            hitbox.GetComponentInChildren<ParticleSystemRenderer>().flip = new Vector2(0, 0);
+            hitbox.SendMessage("Name", selectPlayer, SendMessageOptions.DontRequireReceiver);
+            hitbox.GetComponent<Rigidbody2D>().velocity = new Vector2(10, 0);
+            Destroy(hitbox, 1f);
+        }
+        yield return new WaitForSeconds(time-0.2f);
         isSpecial = false;
         yield break;
     }

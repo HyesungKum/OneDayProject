@@ -31,14 +31,20 @@ public class HitBoxDamageInfo : MonoBehaviour
         stateChage.timer = timer;
         stateChage.slowdownRate = slowdownRate;
     }
+    List<GameObject> list = new List<GameObject>();
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        
         if (collision.gameObject.tag == "1Player" || collision.gameObject.tag == "2Player")
         {
             if (target != collision.gameObject.tag[0])
             {
-                collision.gameObject.SendMessage("GetDamage", damage, SendMessageOptions.DontRequireReceiver);
-                collision.gameObject.SendMessage("StateChage",stateChage, SendMessageOptions.DontRequireReceiver);
+                if (list.Contains(collision.gameObject) == false)
+                {
+                    collision.gameObject.SendMessage("GetDamage", damage, SendMessageOptions.DontRequireReceiver);
+                    collision.gameObject.SendMessage("StateChage", stateChage, SendMessageOptions.DontRequireReceiver);
+                    list.Add(collision.gameObject);
+                }
             }
         }
     }
