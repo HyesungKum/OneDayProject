@@ -3,7 +3,12 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Ground
+  - 1Player
+  - 2Player
+  - 1HitBox
+  - 2HitBox
   layers:
   - Default
   - TransparentFX
@@ -41,18 +46,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: BackGround(3)
-    uniqueID: 1541568455
+  - name: one
+    uniqueID: 890604627
     locked: 0
-  - name: BackGround(2)
-    uniqueID: 3046129881
-    locked: 0
-  - name: BackGround(1)
-    uniqueID: 4258615951
-    locked: 0
-  - name: Ground
-    uniqueID: 464040803
-    locked: 0
-  - name: Player
-    uniqueID: 3001576215
+  - name: two
+    uniqueID: 2713124589
     locked: 0
