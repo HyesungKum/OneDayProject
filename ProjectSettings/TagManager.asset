@@ -52,3 +52,6 @@ TagManager:
   - name: two
     uniqueID: 2713124589
     locked: 0
+  - name: three
+    uniqueID: 3470267691
+    locked: 0
