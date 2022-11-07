@@ -44,6 +44,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        left = true;
         basicSpeed = speed;
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -220,6 +221,7 @@ public class Player : MonoBehaviour
         {
             hitbox = Instantiate(specialSkill, (Vector2)this.transform.position + new Vector2(-0.6f, 0), Quaternion.identity);
             hitbox.GetComponent<ParticleSystemRenderer>().flip = new Vector2(1, 0);
+            hitbox.GetComponent<Rigidbody2D>().velocity = new Vector2(-10, 0);
             hitbox.SendMessage("Name", selectPlayer, SendMessageOptions.DontRequireReceiver);
             Destroy(hitbox, 1f);
         }
@@ -227,6 +229,7 @@ public class Player : MonoBehaviour
         {
             hitbox = Instantiate(specialSkill, (Vector2)this.transform.position + new Vector2(0.6f, 0), Quaternion.identity);
             hitbox.GetComponent<ParticleSystemRenderer>().flip = new Vector2(0, 0);
+            hitbox.GetComponent<Rigidbody2D>().velocity = new Vector2(10, 0);
             hitbox.SendMessage("Name", selectPlayer, SendMessageOptions.DontRequireReceiver);
             Destroy(hitbox, 1f);
         }
