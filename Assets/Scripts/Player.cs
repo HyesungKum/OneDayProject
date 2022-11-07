@@ -29,7 +29,7 @@ public class Player : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        if(selectPlayer==1) gameObject.tag = $"{selectPlayer}Player";
+        if (selectPlayer == 1) gameObject.tag = $"{selectPlayer}Player";
         else gameObject.tag = $"{selectPlayer}Player";
     }
     void Update()
@@ -39,23 +39,37 @@ public class Player : MonoBehaviour
             if (Input.GetKey(KeyCode.LeftArrow)) xinput = -1;
             else if (Input.GetKey(KeyCode.RightArrow)) xinput = 1;
             else xinput = 0;
-            if (Input.GetKeyDown(KeyCode.RightShift))
+            if (Input.GetKeyDown(KeyCode.Comma))
             {
                 if (isAttack == false) BasicAttack();
+            }
+            if (Input.GetKeyDown(KeyCode.Period))
+            {
+            }
+            if (Input.GetKeyDown(KeyCode.KeypadDivide))
+            {
+                
             }
             if (Input.GetKey(KeyCode.UpArrow)) zinput = 1;
             else zinput = 0;
         }
         else//2p
         {
-            if (Input.GetKey(KeyCode.A)) xinput = -1;
-            else if (Input.GetKey(KeyCode.D)) xinput = 1;
+            if (Input.GetKey(KeyCode.D)) xinput = -1;
+            else if (Input.GetKey(KeyCode.G)) xinput = 1;
             else xinput = 0;
-            if (Input.GetKeyDown(KeyCode.LeftShift))
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 if (isAttack == false) BasicAttack();
             }
-            if (Input.GetKey(KeyCode.W)) zinput = 1;
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+            }
+
+            if (Input.GetKey(KeyCode.R)) zinput = 1;
             else zinput = 0;
         }
         xspeed = speed * xinput * Time.deltaTime;
@@ -94,15 +108,6 @@ public class Player : MonoBehaviour
                     animator.SetBool("isGround", true);
             }
         }
-        if (selectPlayer == 2 && collision.gameObject.tag == "HitBox1")
-        {
-            //collision.gameObject.GetComponent<HitBoxDamageInfo>().damage
-        }
-        if (selectPlayer == 1 && collision.gameObject.tag == "HitBox2")
-        {
-
-        }
-
     }
 
     void BasicAttack()
@@ -113,12 +118,12 @@ public class Player : MonoBehaviour
         animator.SetTrigger("attack1");
         if (left == true)
         {
-            hitbox = Instantiate(basicAttack, (Vector2)this.transform.position+Vector2.left, Quaternion.identity);
+            hitbox = Instantiate(basicAttack, (Vector2)this.transform.position + new Vector2(-0.6f, 0), Quaternion.identity);
             Destroy(hitbox, 1f);
         }
         else
         {
-            hitbox = Instantiate(basicAttack, (Vector2)this.transform.position + Vector2.right, Quaternion.identity);
+            hitbox = Instantiate(basicAttack, (Vector2)this.transform.position + new Vector2(0.6f,0), Quaternion.identity);
             Destroy(hitbox, 1f);
         }
         hitbox.tag = $"{selectPlayer}HitBox";

@@ -14,7 +14,6 @@ public class HitBoxDamageInfo : MonoBehaviour
     {
         //자신을 생성한 플레이어를 확인
         target = this.tag[0];//타겟은 1~2
-        damage = 10f;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
