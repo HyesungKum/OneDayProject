@@ -71,5 +71,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 266f7980d08ea91428232b690b8f4b2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
-  timer: 0
+  damage: 90
+  timer: 1
+  slowdownRate: 50
+  state: 0

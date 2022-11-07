@@ -2,6 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+enum state
+{
+    None,
+    Stun,
+    Slow,
+    invincibility,
+}
 public class Player : MonoBehaviour
 {
     private Rigidbody2D rigidbody;
@@ -15,6 +22,10 @@ public class Player : MonoBehaviour
     [SerializeField] private float basicAttackDamage;
     [SerializeField] private float basicAttackSpeed;
     [SerializeField] private float speed;
+    [Header("PlayerState")]
+    [SerializeField] private state playerStun;
+    [SerializeField] private state playerSlow;
+    [SerializeField] private state playerInvincibility;
     [Header("HitBoxPrefab")]
     [SerializeField] private GameObject basicAttack;
     private float xinput;
@@ -22,10 +33,12 @@ public class Player : MonoBehaviour
     private float xspeed;
     private bool left;
     private bool isAttack;
+    private bool isDeath;
+    private float basicSpeed;
 
     void Start()
     {
-        speed = 500;
+        basicSpeed = speed;
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -34,6 +47,8 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
+        if (isDeath == true) return;
+        if (playerStun == state.Stun) return;
         if (selectPlayer == 1)//1p
         {
             if (Input.GetKey(KeyCode.LeftArrow)) xinput = -1;
@@ -46,7 +61,7 @@ public class Player : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Period))
             {
             }
-            if (Input.GetKeyDown(KeyCode.KeypadDivide))
+            if (Input.GetKeyDown(KeyCode.Slash))
             {
                 
             }
@@ -75,7 +90,7 @@ public class Player : MonoBehaviour
         xspeed = speed * xinput * Time.deltaTime;
         if (zinput > 0 && animator.GetBool("isGround") == true)
         {
-            rigidbody.AddForce(new Vector2(xspeed, 50), ForceMode2D.Impulse);
+            rigidbody.AddForce(new Vector2(xspeed, speed / 10), ForceMode2D.Impulse);
             animator.SetBool("isGround", false);
         }
         rigidbody.velocity = new Vector2(xspeed, rigidbody.velocity.y);
@@ -94,8 +109,6 @@ public class Player : MonoBehaviour
             }
         }
         else if (animator.GetBool("isMove") == true) animator.SetBool("isMove", false);
-
-        Debug.Log(animator.GetBool("isGround"));
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -110,30 +123,63 @@ public class Player : MonoBehaviour
         }
     }
 
+    void GetDamage(float damage)
+    {
+        if (isDeath == true) return;
+        if (playerInvincibility == state.invincibility) return;
+        curHp += -damage;
+        if (curHp <= 0)
+        {
+            curHp = 0;
+            animator.SetTrigger("isDeath");
+            isDeath = true;
+        }
+
+    }
+    void StateChage(Stateinfo chage)
+    {
+        if (chage.state == state.None) return;
+        if (chage.state == state.Stun) StartCoroutine(StateChage_Stun(chage.timer));
+        if (chage.state == state.Slow) StartCoroutine(StateChage_Slow(chage.timer,chage.slowdownRate));
+    }
+    IEnumerator StateChage_Stun(float timer)
+    {
+        animator.SetTrigger("isStun");
+        playerStun = state.Stun;
+        yield return new WaitForSeconds(timer);
+        playerStun = state.None;
+        animator.SetTrigger("isStunEnd");
+        yield break;
+    }
+    IEnumerator StateChage_Slow(float timer,float slow)
+    {
+        speed = basicSpeed;
+        speed = speed*((100-slow)/100);
+        playerSlow = state.Slow;
+        yield return new WaitForSeconds(timer);
+        playerSlow = state.None;
+        speed = basicSpeed;
+        yield break;
+    }
+
     void BasicAttack()
     {
         GameObject hitbox;
-        Debug.Log("АјАн");
         isAttack = true;
         animator.SetTrigger("attack1");
         if (left == true)
         {
             hitbox = Instantiate(basicAttack, (Vector2)this.transform.position + new Vector2(-0.6f, 0), Quaternion.identity);
+            hitbox.SendMessage("Name", selectPlayer, SendMessageOptions.DontRequireReceiver);
             Destroy(hitbox, 1f);
         }
         else
         {
-            hitbox = Instantiate(basicAttack, (Vector2)this.transform.position + new Vector2(0.6f,0), Quaternion.identity);
+            hitbox = Instantiate(basicAttack, (Vector2)this.transform.position + new Vector2(0.6f, 0), Quaternion.identity);
+            hitbox.SendMessage("Name", selectPlayer, SendMessageOptions.DontRequireReceiver);
             Destroy(hitbox, 1f);
         }
-        hitbox.tag = $"{selectPlayer}HitBox";
         StartCoroutine(BasicAttack_timer(basicAttackSpeed));
-    }
-
-    void GetDamage(float damage)
-    {
-        curHp += -damage;
-        if (curHp < 0) curHp = 0;
     }
     IEnumerator BasicAttack_timer(float time)
     {
