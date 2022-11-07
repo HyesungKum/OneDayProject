@@ -157,6 +157,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7177085904ee8b4cb1bd2ce6f5c3543, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigidbody: {fileID: 0}
+  animator: {fileID: 0}
+  spriteRenderer: {fileID: 0}
   selectPlayer: 1
   maxHp: 100
   curHp: 100
@@ -169,3 +172,14 @@ MonoBehaviour:
   playerSlow: 0
   playerInvincibility: 0
   basicAttack: {fileID: 6142545988332924572, guid: d149584502956f64fb942d40fb85cdc2, type: 3}
+  uniqueSkill: {fileID: 0}
+  specialSkill: {fileID: 2657273995666745890, guid: 480dd98f4d6843c44b03a5d3ef835ccc, type: 3}
+  xinput: 0
+  zinput: 0
+  xspeed: 0
+  left: 0
+  isAttack: 0
+  isUnique: 0
+  isSpecial: 0
+  isDeath: 0
+  basicSpeed: 0
