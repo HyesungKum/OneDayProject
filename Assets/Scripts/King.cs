@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class King : Player
 {
+   
     public override void SpecialSkill()
     {
         StartCoroutine(SpecialSkill_timer(specialSkillCooltime));

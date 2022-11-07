@@ -42,6 +42,7 @@ public class Player : MonoBehaviour
     public bool isDeath;
     public float basicSpeed;
     public bool isDonMove;
+    public bool touchGround;
 
     void Start()
     {
@@ -102,10 +103,11 @@ public class Player : MonoBehaviour
         xspeed = speed * xinput * Time.deltaTime;
         if (zinput > 0 && animator.GetBool("isGround") == true)
         {
-            rigidbody.AddForce(new Vector2(xspeed, speed / 7), ForceMode2D.Impulse);
+            rigidbody.AddForce(new Vector2(xspeed, speed / 10), ForceMode2D.Impulse);
             animator.SetBool("isGround", false);
         }
-        rigidbody.velocity = new Vector2(xspeed, rigidbody.velocity.y);
+        if(touchGround==true) rigidbody.velocity = new Vector2(0, rigidbody.velocity.y);
+        else rigidbody.velocity = new Vector2(xspeed, rigidbody.velocity.y);
         if (xinput != 0)
         {
             animator.SetBool("isMove", true);
@@ -125,12 +127,20 @@ public class Player : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
+        Debug.Log(collision.contacts[0].normal.y);
         if (animator.GetBool("isGround") == false)
         {
             if (collision.gameObject.tag == "Ground")
             {
-                if (collision.contacts[0].normal.y>0)
+                if (collision.contacts[0].normal.y > 0)
+                {
                     animator.SetBool("isGround", true);
+                    touchGround = false;
+                }
+                else if (collision.contacts[0].normal.y <= 0)
+                {
+                    touchGround = true;
+                }
             }
         }
     }
@@ -146,6 +156,9 @@ public class Player : MonoBehaviour
             animator.SetTrigger("isDeath");
             isDeath = true;
         }
+        if(selectPlayer==1) UIManager.Instance.P1Hit(damage);
+        else if(selectPlayer==2) UIManager.Instance.P2Hit(damage);
+        
     }
     public void StateChage(Stateinfo chage)
     {
@@ -207,10 +220,10 @@ public class Player : MonoBehaviour
         isUnique = true;
         isDonMove = true;
         animator.SetTrigger("isSpell1");
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.01f);
         if (left == true)
         {
-            hitbox = Instantiate(uniqueSkill, (Vector2)this.transform.position + new Vector2(-1f, 0), Quaternion.identity);
+            hitbox = Instantiate(uniqueSkill, (Vector2)this.transform.position + new Vector2(-1f, -1), Quaternion.identity);
             hitbox.GetComponentInChildren<ParticleSystemRenderer>().flip = new Vector2(1, 0);
             hitbox.SendMessage("Name", selectPlayer, SendMessageOptions.DontRequireReceiver);
             rigidbody.velocity = new Vector2(-20,0);
@@ -218,14 +231,14 @@ public class Player : MonoBehaviour
         }
         else
         {
-            hitbox = Instantiate(uniqueSkill, (Vector2)this.transform.position + new Vector2(1f, 0), Quaternion.identity);
+            hitbox = Instantiate(uniqueSkill, (Vector2)this.transform.position + new Vector2(1f, -1), Quaternion.identity);
             hitbox.GetComponentInChildren<ParticleSystemRenderer>().flip = new Vector2(0, 0);
             hitbox.SendMessage("Name", selectPlayer, SendMessageOptions.DontRequireReceiver);
             rigidbody.velocity = new Vector2(20,0);
 
             Destroy(hitbox, 1f);
         }
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.3f);
         isDonMove = false;
 
         yield return new WaitForSeconds(time - 0.2f);
@@ -240,6 +253,7 @@ public class Player : MonoBehaviour
     {
         GameObject hitbox;
         isSpecial = true;
+        isDonMove = true;
         animator.SetTrigger("isSpell2");
         yield return new WaitForSeconds(0.2f);
         if (left == true)
@@ -260,6 +274,7 @@ public class Player : MonoBehaviour
         }
         yield return new WaitForSeconds(time-0.2f);
         isSpecial = false;
+        isDonMove = false;
         yield break;
     }
 

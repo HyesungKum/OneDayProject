@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+public class UIManager : MonoSingleTon<UIManager>
 {
+
     //[Header("Player1_Info")]
-    [SerializeField] Slider childSlider1 = null;
+    [SerializeField] public Slider childSlider1 { get; set; }
     [SerializeField] Slider playerSlider1 = null;
     [SerializeField] bool p1Win = false;
 
     //[Header("Player2_Info")]
-    [SerializeField] Slider childSlider2 = null;
+    [SerializeField] public Slider childSlider2 { get; set; }
     [SerializeField] Slider playerSlider2 = null;
     [SerializeField] bool p2Win = false;
 
@@ -74,7 +75,7 @@ public class UIManager : MonoBehaviour
         //GameManager.Instance.Player2Win = true;
     }
 
-    public void P1Hit(int damage)
+    public void P1Hit(float damage)
     {
         playerSlider1.value -= damage;
         if (playerSlider1.value <= 0)
@@ -98,7 +99,7 @@ public class UIManager : MonoBehaviour
         //GameManager.Instance.Player2Win = true;
     }
 
-    public void P2Hit(int damage)
+    public void P2Hit(float damage)
     {
         playerSlider2.value -= damage;
         if (playerSlider2.value <= 0)
