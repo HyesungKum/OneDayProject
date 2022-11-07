@@ -17,6 +17,9 @@ public class GameManager : MonoSingleTon<GameManager>
     public int Player2SetPos { get; set; }
     #endregion
 
+    public string LeftPlayer { get; set; }
+    public string RightPlayer { get; set; }
+
     //game system controll
     public int SceneNum { get; set; }
     public float TimerCount { get; set; }
@@ -39,13 +42,8 @@ public class GameManager : MonoSingleTon<GameManager>
 
     void Update()
     {
-        if (GameManager.Instance.Player1Done && GameManager.Instance.Player2Done)
-            SceneManager.LoadScene("BattleScene");
-
         if (GameManager.Instance.SceneNum == 2)
         {
-            //양쪽 플레이어 캐릭터 뿌려주기 inst
-            GameManager.Instance.TimerStart();
         }
     }
 

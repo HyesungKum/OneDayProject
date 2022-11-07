@@ -23,11 +23,18 @@ public class UIManager : MonoBehaviour
     [SerializeField] Text p1WinText = null;
     [SerializeField] Text p2WinText = null;
 
+
+    [SerializeField] Text leftText = null;
+    [SerializeField] Text rightText = null;
+
     private void Awake()
     {
         time = GameObject.Find("Time").GetComponent<Text>();
 
         lerpScale = 0.07f;
+
+        leftText.text = GameManager.Instance.LeftPlayer;
+        rightText.text = GameManager.Instance.RightPlayer;
     }
 
     void Start()

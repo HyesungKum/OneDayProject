@@ -46,12 +46,15 @@ public class SelectControll : MonoBehaviour
 
         if (Input.GetKeyDown(up))
         {
-            for (int i = 0; i < transforms.Length; i++)
+            for (int i = 0; i < 2; i++)
             {
+                Debug.Log(i);
                 if (transforms[i].childCount == 0)
                 {
+                    
                     index = i;
                     this.transform.parent = transforms[i];
+                    Debug.Log(transforms[i].name);
                 }
             }
         }
@@ -60,7 +63,7 @@ public class SelectControll : MonoBehaviour
         {
             index = 0;
             this.transform.parent = transforms[2];//go middle
-        }
+        } 
 
         if (Input.GetKeyDown(left))
         {
@@ -91,16 +94,43 @@ public class SelectControll : MonoBehaviour
             }
         }
 
-
         if (Input.GetKeyDown(choice))
         {
-            if (this.transform.parent != transforms[2] && this.transform.parent.childCount == 0)
+            if (transforms[2].childCount == 0)
             {
                 GameManager.Instance.Player2SetPos = index;
-                this.GetComponent<Image>().color += new Color(0.1f, 0.1f, 0.1f);
+                this.GetComponent<Image>().color += new Color(0.5f, 0.5f, 0.5f);
 
                 //캐릭터 선택화면으로 들어가기
                 selectState = 1;
+
+                //test
+                if (this.name == "Player1Controller")
+                {
+                    if (index == 2)//오른쪽
+                    {
+                        GameManager.Instance.RightPlayer = "Player1";
+                    }
+                    else//왼쪽
+                    {
+                        GameManager.Instance.LeftPlayer = "Player1";
+                    }
+
+                    GameManager.Instance.Player1Done = true;
+                }
+                else if(this.name == "Player2Controller")
+                {
+                    GameManager.Instance.Player2Done = true;
+                    if (index == 2)//오른쪽
+                    {
+                        GameManager.Instance.RightPlayer = "Player2";
+                    }
+                    else//왼쪽
+                    {
+                        GameManager.Instance.LeftPlayer = "Player2";
+                    }
+
+                }
             }
         }
     }
