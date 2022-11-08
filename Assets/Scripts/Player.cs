@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
     public Animator animator;
     public SpriteRenderer spriteRenderer;
     [Header("PlayerPick")]
-    [SerializeField] public int selectPlayer;
+    public int selectPlayer;
     [Header("PlayerInfo")]
     [SerializeField] public float maxHp;
     [SerializeField] public float curHp;
@@ -43,7 +43,7 @@ public class Player : MonoBehaviour
     public float basicSpeed;
     public bool isDonMove;
 
-    void Start()
+    void Awake()
     {
         left = true;
         basicSpeed = speed;
@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
         if (selectPlayer == 1) gameObject.tag = $"{selectPlayer}Player";
         else gameObject.tag = $"{selectPlayer}Player";
     }
-    void Update()
+    void FixedUpdate()
     {
         if (GameManager.Instance.GameOver) return;
         if (isDeath == true) return;
@@ -103,7 +103,7 @@ public class Player : MonoBehaviour
         xspeed = speed * xinput * Time.deltaTime;
         if (zinput > 0 && animator.GetBool("isGround") == true)
         {
-            rigidbody.AddForce(new Vector2(xspeed, speed / 10), ForceMode2D.Impulse);
+            rigidbody.AddForce(new Vector2(xspeed, speed / 3.5f), ForceMode2D.Impulse);
             animator.SetBool("isGround", false);
         }
         rigidbody.velocity = new Vector2(xspeed, rigidbody.velocity.y);
@@ -126,7 +126,6 @@ public class Player : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision.contacts[0].normal.y);
         if (animator.GetBool("isGround") == false)
         {
             if (collision.gameObject.tag == "Ground")

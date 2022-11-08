@@ -7,13 +7,13 @@ public class UIManager : MonoSingleTon<UIManager>
 {
     [SerializeField] bool DamageDebug = false;
     //[Header("Player1_Info")]
-    [field: SerializeField] public Slider childSlider1 { get; set; }
-    [SerializeField] Slider playerSlider1 = null;
+    [field: SerializeField] public Slider leftChildSlider { get; set; }
+    [SerializeField] Slider leftSlider = null;
     [SerializeField] bool p1Win = false;
 
     //[Header("Player2_Info")]
-    [field: SerializeField] public Slider childSlider2 { get; set; }
-    [SerializeField] Slider playerSlider2 = null;
+    [field: SerializeField] public Slider rightChildSlider { get; set; }
+    [SerializeField] Slider rightSlider = null;
     [SerializeField] bool p2Win = false;
 
 
@@ -35,7 +35,7 @@ public class UIManager : MonoSingleTon<UIManager>
         lerpScale = 0.07f;
 
         leftText.text = GameManager.Instance.LeftPlayer;
-        rightText.text = GameManager.Instance.RightPlayer;
+        rightText.text = GameManager.Instance.RightPlayer; 
     }
 
     void Start()
@@ -71,76 +71,97 @@ public class UIManager : MonoSingleTon<UIManager>
         #endif
         #endregion
 
-        if (childSlider1 != null && playerSlider1 != null)
+        if (leftChildSlider != null && leftSlider != null)
         {
-            P1RedSlider();
-            P2RedSlider();
+            RightRedSlider();
+            LeftRedSlider();
         }
+    }
+
+    public void P1Hit(float damage)
+    {
+        if (GameManager.Instance.LeftPlayer == "Player1")
+        {
+            leftSlider.value -= damage;
+            if (leftSlider.value <= 0)
+            {
+                P2Win();
+            }
+        }
+        else if (GameManager.Instance.RightPlayer == "Player1")
+        {
+            rightSlider.value -= damage;
+            if (rightSlider.value <= 0)
+            {
+                P2Win();
+            }
+        }
+    }
+    public void P2Hit(float damage)
+    {
+        if (GameManager.Instance.LeftPlayer == "Player2")
+        {
+            leftSlider.value -= damage;
+            if (leftSlider.value <= 0)
+            {
+                P1Win();
+            }
+        }
+        else if (GameManager.Instance.RightPlayer == "Player2")
+        {
+            rightSlider.value -= damage;
+            if (rightSlider.value <= 0)
+            {
+                P1Win();
+            }
+        }
+    }
+
+    void LeftRedSlider()
+    {
+        if (leftChildSlider.value > leftSlider.value)
+        {
+            leftChildSlider.value -= lerpScale;
+        }
+        else leftChildSlider.value = leftSlider.value;
+    }
+
+    void RightRedSlider()
+    {
+        if (rightChildSlider.value > rightSlider.value)
+        {
+            rightChildSlider.value -= lerpScale;
+        }
+        else rightChildSlider.value = rightSlider.value;
     }
 
     public void P1Win()
     {
         p1WinText.gameObject.SetActive(true);
-        //GameManager.Instance.Player2Win = true;
+        Time.timeScale = 0f;
+        GameManager.Instance.GameOver = true;
     }
-
-    public void P1Hit(float damage)
-    {
-        playerSlider1.value -= damage;
-        if (playerSlider1.value <= 0)
-        {
-            P2Win();
-        }
-    }
-
-    void P1RedSlider()
-    {
-        if (childSlider1.value > playerSlider1.value)
-        {
-            childSlider1.value -= lerpScale;
-        }
-        else childSlider1.value = playerSlider1.value;
-    }
-
     public void P2Win()
     {
         p2WinText.gameObject.SetActive(true);
-        //GameManager.Instance.Player2Win = true;
+        Time.timeScale = 0f;
+        GameManager.Instance.GameOver = true;
     }
-
-    public void P2Hit(float damage)
-    {
-        playerSlider2.value -= damage;
-        if (playerSlider2.value <= 0)
-        {
-            P1Win();
-        }
-    }
-
-    void P2RedSlider()
-    {
-        if (childSlider2.value > playerSlider2.value)
-        {
-            childSlider2.value -= lerpScale;
-        }
-        else childSlider2.value = playerSlider2.value;
-    }
-
     void Draw()
     {
         drawText.gameObject.SetActive(true);
-        //GameManager.Instance.Player1Win = false;
-        //GameManager.Instance.Player2Win = false;
+        Time.timeScale = 0f;
+        GameManager.Instance.GameOver = true;
     }
 
     void TimeOver()
     {
-        if (playerSlider1.value > playerSlider2.value)
+        if (leftSlider.value > rightSlider.value)
         {
             P1Win();
             GameManager.Instance.GameOver = true;
         }
-        else if (playerSlider1.value < playerSlider2.value)
+        else if (leftSlider.value < rightSlider.value)
         {
             P2Win();
             GameManager.Instance.GameOver = true;
@@ -150,5 +171,7 @@ public class UIManager : MonoSingleTon<UIManager>
             Draw();
             GameManager.Instance.GameOver = true;
         }
+        Time.timeScale = 0f;
+        GameManager.Instance.GameOver = true;
     }
 }

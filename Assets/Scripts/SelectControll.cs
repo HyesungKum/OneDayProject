@@ -51,6 +51,26 @@ public class SelectControll : MonoBehaviour
         if (rCharWindow.activeSelf)
             rCharWindow.SetActive(false);
     }
+    private void OnEnable()
+    {
+        Initializing();
+    }
+
+    private void Initializing()
+    {
+        index = 2;
+        charIndex = 0;
+
+        charWindow = null;
+
+        selectState = 0;
+
+        if (lCharWindow.activeSelf)
+            lCharWindow.SetActive(false);
+
+        if (rCharWindow.activeSelf)
+            rCharWindow.SetActive(false);
+    }
 
     // Update is called once per frame
     void Update()
@@ -156,6 +176,7 @@ public class SelectControll : MonoBehaviour
             }
         }
     }
+    string dir = " ";
 
     void SelectChar()
     {
@@ -165,10 +186,12 @@ public class SelectControll : MonoBehaviour
         if (index == 0) //left window controll
         {
             charWindow = lCharWindow;
+            dir = "left";
         }
         else //right window controll
         {
             charWindow = rCharWindow;
+            dir = "right";
         }
 
         if (Input.GetKeyDown(left))
@@ -179,6 +202,9 @@ public class SelectControll : MonoBehaviour
                 charIndex = SelectSceneManager.Instance.charList.Count-1;
             }
 
+            if (dir == "right") GameManager.Instance.RightCharIndex = charIndex;
+            else GameManager.Instance.LeftCharIndex = charIndex;
+            
             charWindow.GetComponent<Image>().sprite = charSprites[charIndex];
         }
 
@@ -190,6 +216,9 @@ public class SelectControll : MonoBehaviour
             {
                 charIndex = 0;
             }
+
+            if (dir == "right") GameManager.Instance.RightCharIndex = charIndex;
+            else GameManager.Instance.LeftCharIndex = charIndex;
 
             charWindow.GetComponent<Image>().sprite = charSprites[charIndex];
         }
@@ -207,15 +236,7 @@ public class SelectControll : MonoBehaviour
                 GameManager.Instance.Player2Done = true;
             }
 
-            if (index == 0) //¿ÞÂÊ
-            {
-                GameManager.Instance.leftCharIndex = charIndex;
-            }
             
-            if (index == 1)//¿À¸¥ÂÊ
-            {
-                GameManager.Instance.rightCharIndex = charIndex;
-            }
             selectState = 2;
         }
     }

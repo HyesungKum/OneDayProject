@@ -22,9 +22,9 @@ public class GameManager : MonoSingleTon<GameManager>
     public int Player2SetPos { get; set; }
     #endregion
 
-    public int leftCharIndex { get; set; }
+    public int LeftCharIndex { get; set; }
     public string LeftPlayer { get; set; }
-    public int rightCharIndex { get; set; }
+    public int RightCharIndex { get; set; }
     public string RightPlayer { get; set; }
 
     //game system controll
@@ -43,7 +43,26 @@ public class GameManager : MonoSingleTon<GameManager>
         DontDestroyOnLoad(this);
         Initializing();
     }
+    private void FixedUpdate()
+    {
+        if (GameManager.Instance.GameOver == true)
+        {
+            Debug.Log("hi");
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
 
+                Debug.Log("hi2");
+                GameManager.Instance.SceneNum = 1;
+                Initializing();
+                SceneManager.LoadScene("1.SelectScene");
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+    }
 
     public void Initializing()
     {
@@ -65,6 +84,10 @@ public class GameManager : MonoSingleTon<GameManager>
 
         GameManager.Instance.Player1SetPos = 0;
         GameManager.Instance.Player2SetPos = 0;
+
+        GameManager.Instance.GameOver = false;
+
+        Time.timeScale = 1f;
     }
 
     #region timer controll

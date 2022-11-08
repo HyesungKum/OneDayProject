@@ -150,7 +150,7 @@ MonoBehaviour:
   curHp: 100
   basicAttackDamage: 10
   basicAttackSpeed: 1
-  speed: 700
+  speed: 250
   uniqueSkillCooltime: 5
   specialSkillCooltime: 10
   playerStun: 0
