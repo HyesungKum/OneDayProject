@@ -10,9 +10,17 @@ public class SelectControll : MonoBehaviour
 
     //player select index;
     int index = 2;
+    int charIndex = 0;
+
+    //sprite list
+    List<Sprite> charSprites = new List<Sprite>();
+
+    //targetwindow
+    GameObject charWindow = null;
 
     //player select state
     int selectState = 0;
+
 
     [Header("[move]")]
     [SerializeField] KeyCode up = KeyCode.W;
@@ -23,13 +31,25 @@ public class SelectControll : MonoBehaviour
     [Header("select")]
     [SerializeField] KeyCode choice = KeyCode.Alpha1;
 
-    
+    [SerializeField] GameObject lCharWindow = null;
+    [SerializeField] GameObject rCharWindow = null;
 
     private void Awake()
     {
+        charSprites = SelectSceneManager.Instance.charList;
+
         transforms[0] = GameObject.Find("LeftArea").transform;
         transforms[1] = GameObject.Find("RightArea").transform;
         transforms[2] = GameObject.Find("MiddleArea").transform;
+    }
+
+    private void Start()
+    {
+        if(lCharWindow.activeSelf)
+            lCharWindow.SetActive(false);
+
+        if (rCharWindow.activeSelf)
+            rCharWindow.SetActive(false);
     }
 
     // Update is called once per frame
@@ -48,13 +68,10 @@ public class SelectControll : MonoBehaviour
         {
             for (int i = 0; i < 2; i++)
             {
-                Debug.Log(i);
-                if (transforms[i].childCount == 0)
+                if (transforms[i].childCount < 2)
                 {
-                    
                     index = i;
                     this.transform.parent = transforms[i];
-                    Debug.Log(transforms[i].name);
                 }
             }
         }
@@ -65,12 +82,11 @@ public class SelectControll : MonoBehaviour
             this.transform.parent = transforms[2];//go middle
         }
 
-        Debug.Log($"{this.name} : {index}");
         if (Input.GetKeyDown(left))
         {
             if (index == 0) return;
 
-            if (transforms[0].childCount == 0)
+            if (transforms[0].childCount < 2)
             {
                 index = 0;
                 this.transform.parent = transforms[0];//go left
@@ -85,7 +101,7 @@ public class SelectControll : MonoBehaviour
         {
             if (index == 1) return;
 
-            if (transforms[1].childCount == 0)
+            if (transforms[1].childCount < 2)
             {
                 index = 1;
                 this.transform.parent = transforms[1];//go right 
@@ -96,43 +112,47 @@ public class SelectControll : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(choice))
+        if (Input.GetKeyUp(choice))
         {
-            if (transforms[2].childCount == 0)
+            if (this.transform.parent != transforms[2])
             {
                 GameManager.Instance.Player2SetPos = index;
                 this.GetComponent<Image>().color += new Color(0.5f, 0.5f, 0.5f);
 
-                //캐릭터 선택화면으로 들어가기
-                selectState = 1;
-
                 //test
                 if (this.name == "Player1Controller")
                 {
-                    if (index == 2)//오른쪽
+                    if (index == 1)//오른쪽
                     {
                         GameManager.Instance.RightPlayer = "Player1";
+                        rCharWindow.SetActive(true);
                     }
                     else//왼쪽
                     {
                         GameManager.Instance.LeftPlayer = "Player1";
+                        lCharWindow.SetActive(true);
                     }
 
-                    GameManager.Instance.Player1Done = true;
+                    GameManager.Instance.Player1Ready = true;
                 }
                 else if(this.name == "Player2Controller")
                 {
-                    GameManager.Instance.Player2Done = true;
-                    if (index == 2)//오른쪽
+                    if (index == 1)//오른쪽
                     {
                         GameManager.Instance.RightPlayer = "Player2";
+                        rCharWindow.SetActive(true);
                     }
                     else//왼쪽
                     {
                         GameManager.Instance.LeftPlayer = "Player2";
+                        lCharWindow.SetActive(true);
                     }
 
+                    GameManager.Instance.Player2Ready = true;
                 }
+
+                //캐릭터 선택화면으로 들어가기
+                selectState = 1;
             }
         }
     }
@@ -142,8 +162,64 @@ public class SelectControll : MonoBehaviour
         if (selectState != 1)
             return;
 
-        Debug.Log($"{this.name} state : {GameManager.Instance.Player1SetPos}");
+        if (index == 0) //left window controll
+        {
+            charWindow = lCharWindow;
+        }
+        else //right window controll
+        {
+            charWindow = rCharWindow;
+        }
+
+        if (Input.GetKeyDown(left))
+        {
+            --charIndex;
+            if (charIndex < 0)
+            {
+                charIndex = SelectSceneManager.Instance.charList.Count-1;
+            }
+
+            charWindow.GetComponent<Image>().sprite = charSprites[charIndex];
+        }
+
+        if (Input.GetKeyDown(right))
+        {
+            ++charIndex;
+
+            if (charIndex > SelectSceneManager.Instance.charList.Count-1)
+            {
+                charIndex = 0;
+            }
+
+            charWindow.GetComponent<Image>().sprite = charSprites[charIndex];
+        }
+
+
+        if (Input.GetKeyDown(choice))
+        {
+            if (this.name == "Player1Controller")
+            {
+                GameManager.Instance.Player1Done = true;
+            }
+
+            if (this.name == "Player2Controller")
+            {
+                GameManager.Instance.Player2Done = true;
+            }
+
+            if (index == 0) //왼쪽
+            {
+                GameManager.Instance.leftCharIndex = charIndex;
+            }
+            
+            if (index == 1)//오른쪽
+            {
+                GameManager.Instance.rightCharIndex = charIndex;
+            }
+            selectState = 2;
+        }
     }
+
     IEnumerator Shake()
     {
         float timer = 0f;

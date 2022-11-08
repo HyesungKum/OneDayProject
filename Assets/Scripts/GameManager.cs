@@ -5,19 +5,26 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoSingleTon<GameManager>
 {
+    [Header("[playable character]")]
+    [SerializeField] public List<GameObject> playableCharacter = new List<GameObject>();
+
     #region 1P status
     //player 1 status
+    public bool Player1Ready { get; set; }
     public bool Player1Done { get; set; }
     public int Player1SetPos { get; set; }
     #endregion
 
     #region 2P status
     //player 2 status
+    public bool Player2Ready { get; set; }
     public bool Player2Done { get; set; }
     public int Player2SetPos { get; set; }
     #endregion
 
+    public int leftCharIndex { get; set; }
     public string LeftPlayer { get; set; }
+    public int rightCharIndex { get; set; }
     public string RightPlayer { get; set; }
 
     //game system controll
@@ -37,20 +44,10 @@ public class GameManager : MonoSingleTon<GameManager>
         Initializing();
     }
 
-    void Start()
-    {
-    }
-
-    void Update()
-    {
-        if (GameManager.Instance.SceneNum == 2)
-        {
-        }
-    }
 
     public void Initializing()
     {
-        GameManager.Instance.TimerCount = 10f;
+        GameManager.Instance.TimerCount = 60f;
         GameManager.Instance.TimeOver = false;
 
         GameManager.Instance.TimerInit();
@@ -61,6 +58,10 @@ public class GameManager : MonoSingleTon<GameManager>
         GameManager.Instance.SceneNum = 0;
 
         //players init
+        Player1Ready = false;
+        Player2Ready = false;
+        Player1Done = false;
+        Player2Done = false;
 
         GameManager.Instance.Player1SetPos = 0;
         GameManager.Instance.Player2SetPos = 0;

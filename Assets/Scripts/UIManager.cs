@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoSingleTon<UIManager>
 {
-
+    [SerializeField] bool DamageDebug = false;
     //[Header("Player1_Info")]
     [field: SerializeField] public Slider childSlider1 { get; set; }
     [SerializeField] Slider playerSlider1 = null;
@@ -43,26 +43,33 @@ public class UIManager : MonoSingleTon<UIManager>
         GameManager.Instance.TimerStart();
 
     }
-    int a;
+
     // Update is called once per frame
     void Update()
     {
-        a = (int)GameManager.Instance.TimerCount;
-        time.text = a.ToString();
+        time.text = ((int)GameManager.Instance.TimerCount).ToString();
         if (GameManager.Instance.TimerCount<=0) // 게임종료
         {
             TimeOver();
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        #region Debug function
+        #if UNITY_EDITOR
+        if (DamageDebug)
         {
-            P1Hit(10);
-        }
 
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            P2Hit(10);
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                P1Hit(10);
+            }
+
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                P2Hit(10);
+            }
         }
+        #endif
+        #endregion
 
         if (childSlider1 != null && playerSlider1 != null)
         {

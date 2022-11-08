@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class SelectSceneManager : MonoSingleTon<SelectSceneManager>
 {
+    [SerializeField] public List<Sprite> charList = new List<Sprite>();
+
     private void Update()
     {
         if (GameManager.Instance.Player1Done && GameManager.Instance.Player2Done)
