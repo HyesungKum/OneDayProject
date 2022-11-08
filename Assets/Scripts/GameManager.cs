@@ -43,15 +43,12 @@ public class GameManager : MonoSingleTon<GameManager>
         DontDestroyOnLoad(this);
         Initializing();
     }
-    private void FixedUpdate()
+    private void Update()
     {
         if (GameManager.Instance.GameOver == true)
         {
-            Debug.Log("hi");
             if (Input.GetKeyDown(KeyCode.Space))
             {
-
-                Debug.Log("hi2");
                 GameManager.Instance.SceneNum = 1;
                 Initializing();
                 SceneManager.LoadScene("1.SelectScene");

@@ -138,20 +138,20 @@ public class UIManager : MonoSingleTon<UIManager>
     public void P1Win()
     {
         p1WinText.gameObject.SetActive(true);
-        Time.timeScale = 0f;
         GameManager.Instance.GameOver = true;
+        Time.timeScale = 0f;
     }
     public void P2Win()
     {
         p2WinText.gameObject.SetActive(true);
-        Time.timeScale = 0f;
         GameManager.Instance.GameOver = true;
+        Time.timeScale = 0f;
     }
     void Draw()
     {
         drawText.gameObject.SetActive(true);
-        Time.timeScale = 0f;
         GameManager.Instance.GameOver = true;
+        Time.timeScale = 0f;
     }
 
     void TimeOver()
@@ -159,17 +159,14 @@ public class UIManager : MonoSingleTon<UIManager>
         if (leftSlider.value > rightSlider.value)
         {
             P1Win();
-            GameManager.Instance.GameOver = true;
         }
         else if (leftSlider.value < rightSlider.value)
         {
             P2Win();
-            GameManager.Instance.GameOver = true;
         }
         else
         {
             Draw();
-            GameManager.Instance.GameOver = true;
         }
         Time.timeScale = 0f;
         GameManager.Instance.GameOver = true;
