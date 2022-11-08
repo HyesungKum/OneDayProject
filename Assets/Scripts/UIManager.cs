@@ -7,12 +7,12 @@ public class UIManager : MonoSingleTon<UIManager>
 {
 
     //[Header("Player1_Info")]
-    [SerializeField] public Slider childSlider1 { get; set; }
+    [field: SerializeField] public Slider childSlider1 { get; set; }
     [SerializeField] Slider playerSlider1 = null;
     [SerializeField] bool p1Win = false;
 
     //[Header("Player2_Info")]
-    [SerializeField] public Slider childSlider2 { get; set; }
+    [field: SerializeField] public Slider childSlider2 { get; set; }
     [SerializeField] Slider playerSlider2 = null;
     [SerializeField] bool p2Win = false;
 
@@ -40,17 +40,19 @@ public class UIManager : MonoSingleTon<UIManager>
 
     void Start()
     {
+        GameManager.Instance.TimerStart();
 
     }
-
+    int a;
     // Update is called once per frame
     void Update()
     {
-        //time.text = GameManager.Instace.TimerCount;
-        //if (GameManager.Instance.TimeOut) // 게임종료
-        //{
-        //    TimeOver();
-        //}
+        a = (int)GameManager.Instance.TimerCount;
+        time.text = a.ToString();
+        if (GameManager.Instance.TimerCount<=0) // 게임종료
+        {
+            TimeOver();
+        }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -129,14 +131,17 @@ public class UIManager : MonoSingleTon<UIManager>
         if (playerSlider1.value > playerSlider2.value)
         {
             P1Win();
+            GameManager.Instance.GameOver = true;
         }
-        if (playerSlider1.value < playerSlider2.value)
+        else if (playerSlider1.value < playerSlider2.value)
         {
             P2Win();
+            GameManager.Instance.GameOver = true;
         }
         else
         {
             Draw();
+            GameManager.Instance.GameOver = true;
         }
     }
 }

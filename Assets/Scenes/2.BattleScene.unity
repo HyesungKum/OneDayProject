@@ -178,6 +178,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8913311003046216231, guid: 5f5fa96dcb88191408f51cd2af688cfe, type: 3}
+      propertyPath: m_Mass
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8913311003046216232, guid: 5f5fa96dcb88191408f51cd2af688cfe, type: 3}
       propertyPath: m_Name
       value: King (1)
@@ -401,6 +405,10 @@ PrefabInstance:
       propertyPath: m_FlipX
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8913311003046216231, guid: 5f5fa96dcb88191408f51cd2af688cfe, type: 3}
+      propertyPath: m_Mass
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8913311003046216232, guid: 5f5fa96dcb88191408f51cd2af688cfe, type: 3}
       propertyPath: m_Name
       value: King
@@ -419,7 +427,7 @@ GameObject:
   - component: {fileID: 332365415}
   m_Layer: 0
   m_Name: DeadZone
-  m_TagString: Untagged
+  m_TagString: DeathZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -449,7 +457,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -463,7 +471,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 45, y: 2}
+  m_Size: {x: 100, y: 2}
   m_EdgeRadius: 0
 --- !u!1 &407023880
 GameObject:
@@ -10617,8 +10625,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 509d80864ad81bc4bb48cdeaf9a60933, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <childSlider1>k__BackingField: {fileID: 832886873}
   playerSlider1: {fileID: 666797434}
   p1Win: 0
+  <childSlider2>k__BackingField: {fileID: 2134987088}
   playerSlider2: {fileID: 492394482}
   p2Win: 0
   lerpScale: 0

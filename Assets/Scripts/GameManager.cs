@@ -26,6 +26,7 @@ public class GameManager : MonoSingleTon<GameManager>
     public bool TimeOver { get; set; }
     public bool Player1Win { get; set; }
     public bool Player2Win { get; set; }
+    public bool GameOver { get; set; }
 
     //call gamemanager
     bool Call { get; }
@@ -33,11 +34,11 @@ public class GameManager : MonoSingleTon<GameManager>
     private void Awake()
     {
         DontDestroyOnLoad(this);
+        Initializing();
     }
 
     void Start()
     {
-        Initializing();
     }
 
     void Update()
@@ -49,7 +50,7 @@ public class GameManager : MonoSingleTon<GameManager>
 
     public void Initializing()
     {
-        GameManager.Instance.TimerCount = 0f;
+        GameManager.Instance.TimerCount = 10f;
         GameManager.Instance.TimeOver = false;
 
         GameManager.Instance.TimerInit();
@@ -79,10 +80,9 @@ public class GameManager : MonoSingleTon<GameManager>
     }
     IEnumerator timerEnumerator()
     {
-        while (GameManager.Instance.TimerCount <= 60f)
+        while (GameManager.Instance.TimerCount >= 0f)
         {
-            GameManager.Instance.TimerCount += Time.deltaTime;
-            Debug.Log($"current Time : {(int)GameManager.Instance.TimerCount}");
+            GameManager.Instance.TimerCount -= Time.deltaTime;
             yield return null;
         }
 
